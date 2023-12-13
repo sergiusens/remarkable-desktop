@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Remarkable Desktop
+GenericName=Remarkable
+Comment=Integrate with the remarkable tablet devices
+Type=Application
+Categories=Office
+Exec=remarkable-desktop
+Terminal=false
+Icon=${SNAP}/meta/gui/icon.png

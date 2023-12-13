@@ -1,0 +1,61 @@
+name: remarkable-desktop
+version: 3.0.4.675
+base: core22
+confinement: strict
+grade: stable
+summary: Desktop App for interacting with Remarkable tablets
+description: |
+    The reMarkable desktop application enables you to view, Screen
+    Share, organize, import, and download files.
+
+    Once you have set up the desktop and/or mobile application your
+    device is connected to the reMarkable cloud. All your notebooks,
+    documents, and ebooks will be synced across your devices when
+    connected to Wi-Fi.
+
+apps:
+    remarkable-desktop:
+        extensions: [gnome]
+        command: bin/sommelier run-exe
+        environment:
+            RUN_EXE: "C:/Program Files (x86)/reMarkable/reMarkable.exe"
+            INSTALL_URL: "https://downloads.remarkable.com/desktop/production/win/reMarkable-$SNAPCRAFT_PROJECT_VERSION-win32.exe"
+            SOMMELIER_KEEP_CWD: 1
+            WINEDLLOVERRIDES: "$WINEDLLOVERRIDES;mscoree,mshtml="
+        plugs:
+            - home
+            - network
+            - network-bind
+            - removable-media
+    wine:
+        extensions: [gnome]
+        command: bin/sommelier
+        plugs:
+            - home
+            - network
+    winetricks:
+        extensions: [gnome]
+        command: bin/sommelier winetricks
+        plugs:
+            - home
+            - network
+
+plugs:
+    wine-runtime-c22:
+        interface: content
+        target: $SNAP/wine-runtime
+        default-provider: wine-platform-runtime-core22
+    wine-7-stable-c22:
+        interface: content
+        target: $SNAP/wine-platform
+        default-provider: wine-platform-7-stable-core22
+
+parts:
+    sommelier-core:
+        plugin: make
+        source: https://github.com/sergiusens/sommelier-core.git
+        source-branch: no-sudo
+        build-packages:
+          - libc6-dev-i386
+          - gcc-multilib
+
